@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+
+<!--    name = id  有唯一性  -->
+<!--    bean 包含 autowire destory-method、init-method、scope、depends-on等属性  -->
+    <bean id="student" class="org.example.bean.Student" scope="singleton" depends-on="card" autowire="byType">
+        <constructor-arg value="17" index="1"/>
+        <constructor-arg value="yousa" index="0" />
+<!--        <property name="name" value="yousa" />-->
+<!--        <property name="age" value="12" />-->
+<!--        <property name="card" ref="card" />-->
+        <property name="listFriends">
+            <list>
+                <value>yousa</value>
+                <value>xio</value>
+                <value>Kim</value>
+            </list>
+        </property>
+        <property name="mapScore">
+            <map>
+                <entry key="数学" value="98" />
+                <entry key="语文" value="97" />
+                <entry key="英语" value="80" />
+            </map>
+        </property>
+    </bean>
+    <bean name="card" class="org.example.bean.Card" scope="prototype" />
+
+    <bean name="testApp" class="org.example.aopTest.AppTest" />
+    <aop:config>
+
+        <aop:aspect ref="testApp">
+            <aop:pointcut id="stu" expression="execution(* org.example.bean.Student.say(String))"/>
+            <aop:after-returning method="after" pointcut-ref="stu" />
+<!--            <aop:after method=""-->
+        </aop:aspect>
+        <aop:aspect ref="testApp">
+            <aop:pointcut id="stu2" expression="@annotation(Deprecated)" />
+            <aop:after method="before" pointcut-ref="stu2"/>
+        </aop:aspect>
+
+    </aop:config>
+</beans>
