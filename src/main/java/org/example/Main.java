@@ -9,8 +9,9 @@ public class Main {
         Student student = context.getBean(Student.class);
         Student student2 = (Student) context.getBean("student");
         System.out.println(student);
-        student.say("hello java");
-        student.text();
+        student.advice("多喝水");
+//        student.say("hello java");
+//        student.text();
 //        System.out.println(student2);
 //        System.out.println(student2 == student);
 

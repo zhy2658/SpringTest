@@ -48,4 +48,8 @@ public class Student {
     public void text(){
         System.out.println("我是text方法");
     }
+    public String advice(String description){
+        System.out.println(description);
+        return description;
+    }
 }

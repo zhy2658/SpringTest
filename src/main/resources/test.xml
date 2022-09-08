@@ -31,20 +31,38 @@
             </map>
         </property>
     </bean>
+
+<!--    AOP-->
+<!--    Advice：通知-->
+<!--    joinPoint：连接点-->
+<!--    aspect：切面-->
+<!--    introduction：引入-->
+<!--    Weaving：织入-->
     <bean name="card" class="org.example.bean.Card" scope="prototype" />
-
     <bean name="testApp" class="org.example.aopTest.AppTest" />
-    <aop:config>
+    <bean name="appAdviceBefore" class="org.example.aopTest.AppAdvice" />
 
+    <aop:config>
+<!--     1.  Student.advice  -> AppAdvice.before  方法返回之前实现的类方法-->
+        <aop:pointcut id="advice" expression="execution(* org.example.bean.Student.advice(String))" />
+        <aop:advisor advice-ref="appAdviceBefore" pointcut-ref="advice" />
+
+<!--     2.  Student.say方法  -> AppTest.after() -->
         <aop:aspect ref="testApp">
             <aop:pointcut id="stu" expression="execution(* org.example.bean.Student.say(String))"/>
             <aop:after-returning method="after" pointcut-ref="stu" />
 <!--            <aop:after method=""-->
         </aop:aspect>
+
+<!--     3.  销毁注解方法  -> AppTest.around()-->
         <aop:aspect ref="testApp">
             <aop:pointcut id="stu2" expression="@annotation(Deprecated)" />
-            <aop:after method="before" pointcut-ref="stu2"/>
+<!--            <aop:after method="before" pointcut-ref="stu2"/>-->
+            <aop:around method="around" pointcut-ref="stu2" />
         </aop:aspect>
+
+
+
 
     </aop:config>
 </beans>
